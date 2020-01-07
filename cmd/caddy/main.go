@@ -27,12 +27,35 @@
 package main
 
 import (
-	caddycmd "github.com/caddyserver/caddy/v2/cmd"
-
+	_ "net/http/pprof"
+	"net/http"
+	"os"
 	// plug in Caddy modules here
+
+	"github.com/google/logger"
+
+	caddycmd "github.com/caddyserver/caddy/v2/cmd"
 	_ "github.com/caddyserver/caddy/v2/modules/standard"
 )
 
+const (
+	logPath = "./output.log"
+	verbose = true
+  )
+
 func main() {
+	logFile, err := os.OpenFile(logPath, os.O_CREATE | os.O_WRONLY | os.O_APPEND, 0600)
+	if err != nil {
+	  logger.Fatalf("error in initiatlizing global logger, err: <%s>\n", err.Error())
+	}
+	defer logFile.Close()
+  
+	defer logger.Init("Caddy Logger", verbose, true, logFile).Close()
+  
+	logger.Info("logger init")
+  
+	go func() {
+	  logger.Info(http.ListenAndServe("0.0.0.0:6060", nil))
+	}()
 	caddycmd.Main()
 }
