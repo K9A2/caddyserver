@@ -21,12 +21,13 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/mholt/certmagic"
+
 	"github.com/caddyserver/caddy/v2"
 	"github.com/caddyserver/caddy/v2/caddyconfig"
 	"github.com/caddyserver/caddy/v2/caddyconfig/httpcaddyfile"
 	caddycmd "github.com/caddyserver/caddy/v2/cmd"
 	"github.com/caddyserver/caddy/v2/modules/caddyhttp"
-	"github.com/mholt/certmagic"
 )
 
 func init() {

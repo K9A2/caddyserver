@@ -27,13 +27,14 @@
 package main
 
 import (
-	_ "net/http/pprof"
-	"net/http"
-	"os"
+	// _ "net/http/pprof"
+	// "net/http"
+	// "os"
 	// plug in Caddy modules here
 
-	"github.com/google/logger"
+	// "github.com/google/logger"
 
+	"github.com/caddyserver/caddy/v2"
 	caddycmd "github.com/caddyserver/caddy/v2/cmd"
 	_ "github.com/caddyserver/caddy/v2/modules/standard"
 )
@@ -44,18 +45,21 @@ const (
   )
 
 func main() {
-	logFile, err := os.OpenFile(logPath, os.O_CREATE | os.O_WRONLY | os.O_APPEND, 0600)
-	if err != nil {
-	  logger.Fatalf("error in initiatlizing global logger, err: <%s>\n", err.Error())
-	}
-	defer logFile.Close()
+	// logFile, err := os.OpenFile(logPath, os.O_CREATE | os.O_WRONLY | os.O_APPEND, 0600)
+	// if err != nil {
+	//   logger.Fatalf("error in initiatlizing global logger, err: <%s>\n", err.Error())
+	// }
+	// defer logFile.Close()
   
-	defer logger.Init("Caddy Logger", verbose, true, logFile).Close()
+	// defer logger.Init("Caddy Logger", verbose, true, logFile).Close()
   
-	logger.Info("logger init")
+	// logger.Info("logger init")
   
-	go func() {
-	  logger.Info(http.ListenAndServe("0.0.0.0:6060", nil))
-	}()
+	// go func() {
+	//   logger.Info(http.ListenAndServe("0.0.0.0:6060", nil))
+	// }()
+
+	// 在后台运行调度器
+	go caddy.RunResponseWriterScheduler()
 	caddycmd.Main()
 }
